@@ -1,0 +1,8 @@
+[package]
+name = "walnut-html"
+version = "0.1.0"
+edition = "2021"
+include.workspace = true
+
+[dependencies]
+ego-tree = "0.9.0"

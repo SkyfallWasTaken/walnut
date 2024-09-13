@@ -1,0 +1,4 @@
+[workspace]
+resolver = "2"
+package.include = ["crates/*"]
+members = ["crates/*"]
