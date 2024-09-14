@@ -4,3 +4,6 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+reqwest = { version = "0.12.7", features = ["blocking"] }
+skia-safe = "0.78.0"
+tl = "0.7.8"
