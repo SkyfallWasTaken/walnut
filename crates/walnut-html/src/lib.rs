@@ -28,7 +28,7 @@ pub fn parse(html: &str) -> Tree<Node> {
     });
     visit_nodes(stream, &mut tree.root_mut());
 
-    tree
+    dbg!(tree)
 }
 
 fn visit_nodes<'a>(pair: Pair<'_, Rule>, parent: &mut NodeMut<'_, Node>) {
@@ -40,6 +40,11 @@ fn visit_nodes<'a>(pair: Pair<'_, Rule>, parent: &mut NodeMut<'_, Node>) {
             Rule::opening => {
                 let mut item = item.into_inner();
                 tag_stack.push(item.next().unwrap().as_str().trim());
+                node_stack.last_mut().unwrap().append(Node {
+                    tag: tag_stack.last().unwrap().to_string(),
+                    text: "".to_string(),
+                    attrs: HashMap::new(),
+                });
 
                 let attrs = item.next().unwrap().into_inner();
                 for attr in attrs {
