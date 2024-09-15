@@ -1,0 +1,17 @@
+opening =  { "<" ~ tag_name ~ attributes? ~ ">" }
+closing =  { "</" ~ tag_name ~ ">" }
+element = _{ (opening ~ content? ~ closing?) | text }
+content =  { element* }
+text    =  { (!("<" | ">") ~ ANY)+ }
+stream  =  { SOI ~ element* ~ EOI }
+
+attributes     =  { (whitespace* ~ attr)* }
+attr           =  { attr_name ~ "=" ~ (quoted_value | unquoted_value) }
+attr_name      =  { (ASCII_ALPHANUMERIC | "-")+ }
+quoted_value   = _{ "\"" ~ attr_value ~ "\"" }
+unquoted_value =  { (!whitespace ~ !(">" | "/>" | "=") ~ ANY)+ }
+attr_value     = @{ (!("\"") ~ ANY)* }
+
+tag_name   =  { (ASCII_ALPHANUMERIC | "-")+ }
+whitespace = _{ " " | "\t" | "\n" | "\r" }
+WHITESPACE = _{ "\t" | "\n" | "\r" }
