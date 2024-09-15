@@ -45,12 +45,12 @@ fn main() {
         let node_val = node.value();
         let tag_name = node_val.tag.as_str();
         match tag_name {
-            "H1" => {
+            "h2" => {
                 let text = &node_val.text;
                 skia_canvas.draw_str(text, (50.0, y), &h1_font, &paint);
                 y += 50.0;
             }
-            "P" | "A" => {
+            "p" | "a" => {
                 let text = &node_val.text;
                 if text == "The World Wide Web project" {
                     dbg!(&text, &tag_name);
