@@ -32,16 +32,16 @@ pub fn parse(html: &str) -> Tree<Node> {
 }
 
 fn visit_nodes<'a>(pair: Pair<'_, Rule>, parent: &mut NodeMut<'_, Node>) {
-    let mut tag_stack = vec!["html"];
-    let mut node_stack = vec![parent];
-
     for item in pair.into_inner() {
         match item.as_rule() {
             Rule::opening => {
+                let opening_tag = item.into_inner().next().unwrap().as_str().trim();
+                // Add text before the opening tag
+                todo!("add text before opening tag");
+
                 let mut item = item.into_inner();
-                tag_stack.push(item.next().unwrap().as_str().trim());
-                node_stack.last_mut().unwrap().append(Node {
-                    tag: tag_stack.last().unwrap().to_string(),
+                parent.last_child().unwrap().append(Node {
+                    tag: opening_tag.to_string(),
                     text: "".to_string(),
                     attrs: HashMap::new(),
                 });
@@ -52,42 +52,18 @@ fn visit_nodes<'a>(pair: Pair<'_, Rule>, parent: &mut NodeMut<'_, Node>) {
                     let lowercase_key = attr.next().unwrap().to_string().to_lowercase();
                     let key = lowercase_key.as_str().trim();
                     let value = attr.next().unwrap().as_str();
-                    node_stack
-                        .last_mut()
-                        .unwrap()
-                        .value()
-                        .attrs
-                        .insert(key.to_string(), value.to_string());
+                    todo!("add attributes to current node");
                 }
             }
             Rule::closing => {
                 let closing_tag = item.into_inner().next().unwrap().as_str().trim();
-                if let Some(opening_tag) = tag_stack.pop() {
-                    if opening_tag != closing_tag {
-                        // Handle mismatched tags if needed
-                        println!(
-                            "Warning: Mismatched tags. Expected {}, found {}",
-                            opening_tag, closing_tag
-                        );
-                    }
-                    // Pop the current node from the stack as we're closing its tag
-                    if node_stack.len() > 1 {
-                        let closed_node = node_stack.pop().unwrap();
-                        node_stack
-                            .last_mut()
-                            .unwrap()
-                            .append(closed_node.value().clone());
-                    }
-                } else {
-                    // Handle the case where there's a closing tag without a matching opening tag
-                    println!("Warning: Unexpected closing tag {}", closing_tag);
-                }
+                todo!()
             }
-            Rule::content => visit_nodes(item, node_stack.last_mut().unwrap()),
+            Rule::content => todo!(),
             Rule::text => {
                 let chunk = item.as_str();
                 // Add the text content to the current node
-                node_stack.last_mut().unwrap().value().text.push_str(chunk);
+                todo!()
             }
             Rule::EOI => {}
             _ => unreachable!(),
