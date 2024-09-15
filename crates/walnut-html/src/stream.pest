@@ -1,7 +1,7 @@
 opening =  { "<" ~ tag_name ~ attributes? ~ ">" }
 closing =  { "</" ~ tag_name ~ ">" }
 element = _{ (opening ~ content? ~ closing?) | text }
-content =  { element* }
+content =  { whitespace* ~ element* }
 text    =  { (!("<" | ">") ~ ANY)+ }
 stream  =  { SOI ~ element* ~ EOI }
 

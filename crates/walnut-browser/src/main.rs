@@ -16,12 +16,11 @@ pub const NORMAL_FONT_SIZE: f32 = 36.0;
 
 fn main() {
     // Get + parse HTML
-    let html = reqwest::blocking::get("http://info.cern.ch/hypertext/WWW/TheProject.html")
+    let html = /* reqwest::blocking::get("http://info.cern.ch/hypertext/WWW/TheProject.html")
         .unwrap()
         .text()
-        .unwrap();
-    let dom = tl::parse(&html, tl::ParserOptions::default()).unwrap();
-    let parser = dom.parser();
+        .unwrap(); */ include_str!("../../walnut-html/cern.html");
+    let dom = walnut_html::parse(&html);
 
     // Setup canvas and paint
     let mut canvas = Canvas::new(2560, 1280);
@@ -43,19 +42,16 @@ fn main() {
     // Paint nodes
     let mut y = 50.0;
     for node in dom.nodes() {
-        let tag_name = node
-            .as_tag()
-            .map(|tag| str::from_utf8(tag.name().as_bytes()))
-            .unwrap_or(Ok("P"))
-            .unwrap();
+        let node_val = node.value();
+        let tag_name = node_val.tag.as_str();
         match tag_name {
             "H1" => {
-                let text = node.inner_text(parser);
+                let text = &node_val.text;
                 skia_canvas.draw_str(text, (50.0, y), &h1_font, &paint);
                 y += 50.0;
             }
             "P" | "A" => {
-                let text = node.inner_text(parser);
+                let text = &node_val.text;
                 if text == "The World Wide Web project" {
                     dbg!(&text, &tag_name);
                 }
