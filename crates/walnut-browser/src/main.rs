@@ -45,12 +45,12 @@ fn main() {
         let node_val = node.value();
         let tag_name = node_val.tag.as_str();
         match tag_name {
-            "h2" => {
+            "h1" | "H1" => {
                 let text = &node_val.text;
                 skia_canvas.draw_str(text, (50.0, y), &h1_font, &paint);
                 y += 50.0;
             }
-            "p" | "a" => {
+            "p" | "a" | "P" | "A" => {
                 let text = &node_val.text;
                 if text == "The World Wide Web project" {
                     dbg!(&text, &tag_name);
@@ -58,7 +58,9 @@ fn main() {
                 skia_canvas.draw_str(text, (50.0, y), &normal_font, &paint);
                 y += 50.0;
             }
-            _ => {}
+            _ => {
+                println!("Not rendering tag {tag_name}");
+            }
         }
     }
 

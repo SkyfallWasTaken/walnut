@@ -1,6 +1,4 @@
-use std::mem;
-
-use skia_safe::{surfaces, Color, Data, EncodedImageFormat, Paint, PaintStyle, Path, Surface};
+use skia_safe::{surfaces, Color, Data, EncodedImageFormat, Paint, Surface};
 
 pub struct Canvas {
     pub surface: Surface,
@@ -16,11 +14,6 @@ impl Canvas {
         paint.set_stroke_width(1.0);
         surface.canvas().clear(Color::WHITE);
         Canvas { surface, paint }
-    }
-
-    #[inline]
-    pub fn save(&mut self) {
-        self.surface.canvas().save();
     }
 
     #[inline]
